@@ -397,6 +397,6 @@ highlights  = 0.0
     {
         // watcher is detached (see startConfigWatcher), no join needed
         if (!g_watcherRunning.exchange(false)) return;
-        if (g_watcherStopFd[1] >= 0) { ::write(g_watcherStopFd[1], "x", 1); }
+        if (g_watcherStopFd[1] >= 0) { (void)!::write(g_watcherStopFd[1], "x", 1); }
     }
 }
