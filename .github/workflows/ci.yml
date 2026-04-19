@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: install deps
+        run: |
+          pacman -Syu --noconfirm --needed \
+            base-devel meson ninja glslang vulkan-headers vulkan-icd-loader libx11 git
+
+      - uses: actions/checkout@v4
+
+      - name: build
+        run: |
+          meson setup build --prefix=/usr
+          ninja -C build
+
+      - name: smoke check
+        run: |
+          ls -lh build/src/libVkLayer_vksumi.so
+          nm -D --defined-only build/src/libVkLayer_vksumi.so | grep vksumi_GetInstanceProcAddr
