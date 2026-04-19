@@ -1,0 +1,21 @@
+{
+    "file_format_version": "1.0.0",
+    "layer": {
+        "name": "VK_LAYER_vksumi_color_grading",
+        "type": "GLOBAL",
+        "library_path": "libVkLayer_vksumi.so",
+        "api_version": "1.4.0",
+        "implementation_version": "1",
+        "description": "vksumi runtime color grading (brightness, contrast, saturation, hue, gamma)",
+        "functions": {
+            "vkGetInstanceProcAddr": "vksumi_GetInstanceProcAddr",
+            "vkGetDeviceProcAddr": "vksumi_GetDeviceProcAddr"
+        },
+        "enable_environment": {
+            "ENABLE_VKSUMI": "1"
+        },
+        "disable_environment": {
+            "DISABLE_VKSUMI": "1"
+        }
+    }
+}

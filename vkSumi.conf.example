@@ -1,0 +1,54 @@
+# vkSumi color grading
+#
+# Lives at:
+#   ~/.config/vkSumi/vkSumi.conf              global default
+#   ~/.config/vkSumi/games/<exe>.conf         per-game overrides (auto-created)
+#
+# Per-game files merge on top of the global one, only set what you wanna change.
+# Save and the layer reloads via inotify, no game restart needed.
+#
+# 0 = no change for every knob.
+# + = more / brighter.
+# - = less / darker.
+
+enabled     = true
+toggle_keys = Shift_R+F9    # in-game hotkey, X11 + XWayland (Wine/Proton)
+
+# tone
+brightness  = 0.0    # [-1 .. 1]
+contrast    = 0.0    # [-1 .. 1]
+exposure    = 0.0    # EV stops, mul = 2^value, [-3 .. 3]
+gamma       = 0.0    # [-1 .. 1], + brightens midtones
+
+# color
+saturation  = 0.0    # [-1 .. 1], -1 = grayscale
+vibrance    = 0.0    # smarter saturation
+hue_deg     = 0.0    # [-180 .. 180]
+temperature = 0.0    # warm (+) cool (-)
+tint        = 0.0    # magenta (+) green (-)
+
+# per-channel gain
+red_gain    = 0.0
+green_gain  = 0.0
+blue_gain   = 0.0
+
+# 3-band
+shadows     = 0.0
+midtones    = 0.0
+highlights  = 0.0
+
+
+# Hotkey, two options. Pick whichever:
+#
+# 1. In-layer (X11 or XWayland, so Wine/Proton games work great):
+#    set toggle_keys above. Press the combo while the game window is focused.
+#    Format: "+"-separated X11 keysym names. Full list in
+#    /usr/include/X11/keysymdef.h if you wanna see what else there is.
+#    Doesn't work for native Wayland Vulkan games though, Wayland blocks it.
+#
+# 2. vksumi-toggle script + compositor keybind (works on Wayland too):
+#    Hyprland (~/.config/hypr/hyprland.conf):
+#      bind = SHIFT, F9, exec, vksumi-toggle
+#    sway (~/.config/sway/config):
+#      bindsym Shift+F9 exec vksumi-toggle
+#    The script just edits `enabled` here, inotify catches it, instant reload.

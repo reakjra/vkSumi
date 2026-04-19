@@ -1,0 +1,23 @@
+# build outtput
+build/
+builddir/
+*.o
+*.so
+
+# clangd / IDE noise
+compile_commands.json
+.cache/
+.vscode/
+.idea/
+
+# editor swap files
+*.swp
+*.swo
+*~
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# upstream repos cloned for reference
+refs/

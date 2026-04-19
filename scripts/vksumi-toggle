@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# vksumi-toggle: flip `enabled` in the global vkSumi config.
+# inotify in the layer reloads on save, so the change is instant.
+#
+# Bind in your compositor:
+#   Hyprland:  bind = SHIFT, F9, exec, vksumi-toggle
+#   sway:      bindsym Shift+F9 exec vksumi-toggle
+#
+# For the in-layer hotkey (works while game has focus, no script needed) set
+# toggle_keys = Shift_R+F9 in the conf. That path uses xlib so it covers X11
+# and XWayland (Wine/Proton) but not native Wayland Vulkan games. This script
+# is the Wayland-friendly fallback.
+
+set -eu
+
+conf="${XDG_CONFIG_HOME:-$HOME/.config}/vkSumi/vkSumi.conf"
+
+if [[ ! -f "$conf" ]]; then
+    mkdir -p "$(dirname "$conf")"
+    printf 'enabled = true\n' > "$conf"
+    echo "vksumi-toggle: created $conf"
+fi
+
+current="$(grep -E '^[[:space:]]*enabled[[:space:]]*=' "$conf" | tail -n1 | sed -E 's/^[^=]*=[[:space:]]*([^[:space:]#]+).*/\1/' || true)"
+case "${current,,}" in
+    1|true|yes|on)  next="false" ;;
+    *)              next="true"  ;;
+esac
+
+if grep -qE '^[[:space:]]*enabled[[:space:]]*=' "$conf"; then
+    sed -i -E "s/^([[:space:]]*enabled[[:space:]]*=[[:space:]]*).*/\1$next/" "$conf"
+else
+    printf 'enabled = %s\n' "$next" >> "$conf"
+fi
+
+echo "vksumi: enabled = $next"
