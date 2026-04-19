@@ -5,6 +5,9 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
+permissions:
+  contents: write   # needed to create/update the GitHub Release
+
 jobs:
   arch:
     runs-on: ubuntu-latest
@@ -23,14 +26,16 @@ jobs:
           useradd -m builder
           chown -R builder:builder .
           cp packaging/PKGBUILD .
-          # patch in the version from the git tag
+          # patch version from tag + build from local checkout instead of the
+          # github release tarball. `cd "$startdir"` sends build()/package() back
+          # to the repo root (makepkg cd's us into $srcdir = ./src by default,
+          # which is our own src/ dir, confusing meson)
           ver="${GITHUB_REF_NAME#v}"
           [ -z "$ver" ] && ver="0.0.0"
           sed -i "s/^pkgver=.*/pkgver=$ver/" PKGBUILD
-          # build from local checkout, not from the github tarball
-          sed -i "s|source=.*|source=()|" PKGBUILD
-          sed -i "s|sha256sums=.*|sha256sums=()|" PKGBUILD
-          sed -i 's|cd vkSumi-\$pkgver||' PKGBUILD
+          sed -i 's|source=(.*)|source=()|' PKGBUILD
+          sed -i 's|sha256sums=(.*)|sha256sums=()|' PKGBUILD
+          sed -i 's|cd vkSumi-\$pkgver|cd "$startdir"|' PKGBUILD
           sudo -u builder makepkg --noconfirm
 
       - uses: softprops/action-gh-release@v2
