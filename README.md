@@ -26,6 +26,12 @@ meson install -C builddir
 Drops the `.so` in `~/.local/lib/`, the layer manifest in
 `~/.local/share/vulkan/implicit_layer.d/`, and the toggle script in `~/.local/bin/`.
 
+Currently available through AUR:
+
+```fish
+yay -S vksumi
+```
+
 ## Use
 
 The layer only activates when `ENABLE_VKSUMI=1` is set, otherwise it's invisible.
