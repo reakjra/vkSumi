@@ -28,7 +28,7 @@ namespace vksumi
         // what we drop into ~/.config/vkSumi/games/<exe>.conf the first time a
         // game's swapchain attaches. mirrors vkSumi.conf.example.
         constexpr const char* TEMPLATE = R"VKSUMI(# vkSumi per-game config, auto-created on first launch.
-# Merges on top of ~/.config/vkSumi/vkSumi.conf, only sets what differs.
+# Merges on top of ~/.config/vkSumi/vkSumi.conf, only sets what's enabled in this file.
 
 # 0 = no change for every knob.
 # + = more / brighter.
