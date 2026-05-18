@@ -3,6 +3,9 @@ build/
 builddir/
 *.o
 *.so
+*.pkg.tar.zst
+*.deb
+*.rpm
 
 # clangd / IDE noise
 compile_commands.json

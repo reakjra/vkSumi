@@ -34,26 +34,26 @@ namespace vksumi
 # + = more / brighter.
 # - = less / darker.
 
-enabled = true
+# enabled = true
 
-brightness  = 0.0
-contrast    = 0.0
-exposure    = 0.0
-gamma       = 0.0
+# brightness  = 0.0
+# contrast    = 0.0
+# exposure    = 0.0
+# gamma       = 0.0
 
-saturation  = 0.0
-vibrance    = 0.0
-hue_deg     = 0.0
-temperature = 0.0
-tint        = 0.0
+# saturation  = 0.0
+# vibrance    = 0.0
+# hue_deg     = 0.0
+# temperature = 0.0
+# tint        = 0.0
 
-red_gain    = 0.0
-green_gain  = 0.0
-blue_gain   = 0.0
+# red_gain    = 0.0
+# green_gain  = 0.0
+# blue_gain   = 0.0
 
-shadows     = 0.0
-midtones    = 0.0
-highlights  = 0.0
+# shadows     = 0.0
+# midtones    = 0.0
+# highlights  = 0.0
 
 # toggle_keys = Shift_R+F9
 )VKSUMI";
