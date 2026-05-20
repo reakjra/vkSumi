@@ -1,6 +1,6 @@
 # Maintainer: reakjra <reakjra@proton.me>
 pkgname=vksumi
-pkgver=0.0.5
+pkgver=0.0.6
 pkgrel=1
 pkgdesc='Vulkan layer for runtime color grading on Linux (Adrenalin / Freestyle equivalent)'
 arch=('x86_64')
