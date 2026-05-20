@@ -103,6 +103,8 @@ namespace vksumi
             #undef F
             if (key == "enabled")     { cfg.enabled = parseBool(val, true); return; }
             if (key == "toggle_keys") { cfg.toggle_keys = val; return; }
+            if (key == "VKSUMI_CONFIG_FILE") { cfg.vksumi_config_file = val; return; }
+            if (key == "PER_GAME_CONFIG_CREATION") { cfg.per_game_config_creation = parseBool(val, true); return; }
             VKSUMI_TRACE("conf: unknown key '%s'", key.c_str());
         }
 
@@ -257,6 +259,8 @@ namespace vksumi
 
     void ensurePerGameConfig()
     {
+        if (!currentConfig()->per_game_config_creation) return;
+
         std::string p = perGameConfPath();
         if (p.empty() || fileExists(p)) return;
 
@@ -277,8 +281,29 @@ namespace vksumi
         auto ladder = buildLadder(watchDir);
 
         bool any = false;
-        for (const auto& p : ladder)
+
+        if (!ladder.empty())
         {
+            if (parseFile(ladder[0], *cfg))
+            {
+                any = true;
+                if (!cfg->vksumi_config_file.empty())
+                {
+                    std::string redirect = cfg->vksumi_config_file;
+                    *cfg = Config();
+                    ladder[0] = redirect;
+                    any = false;
+                }
+                else
+                {
+                    VKSUMI_TRACE("merged conf: %s", ladder[0].c_str());
+                }
+            }
+        }
+
+        for (size_t i = any ? 1 : 0; i < ladder.size(); ++i)
+        {
+            const auto& p = ladder[i];
             if (parseFile(p, *cfg)) { any = true; VKSUMI_TRACE("merged conf: %s", p.c_str()); }
         }
 

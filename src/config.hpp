@@ -39,6 +39,8 @@ namespace vksumi
         bool        enabled     = true;
         std::string toggle_keys = "Shift_R+F9";
         std::vector<std::string> sources;
+        std::string vksumi_config_file;
+        bool        per_game_config_creation = true;
     };
 
     std::shared_ptr<const Config> loadConfig();

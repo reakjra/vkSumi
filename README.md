@@ -76,6 +76,9 @@ blue_gain   = 0.0
 shadows     = 0.0
 midtones    = 0.0
 highlights  = 0.0
+
+PER_GAME_CONFIG_CREATION=true     # per-game .conf file creation (true by default)
+VKSUMI_CONFIG_FILE=path/to/.conf  # path to another .conf file that act as a global substitute
 ```
 
 See `vkSumi.conf.example` for the full annotated version.
