@@ -82,6 +82,34 @@ namespace vksumi
             catch (...) { return false; }
         }
 
+        std::string envOr(const char* name, const std::string& fallback)
+        {
+            const char* v = std::getenv(name);
+            return v ? std::string(v) : fallback;
+        }
+
+        std::string expandPath(std::string path)
+        {
+            if (path.empty()) return path;
+            if (path[0] == '~')
+            {
+                path.replace(0, 1, envOr("HOME", "."));
+            }
+            
+            auto replaceAll = [](std::string& str, const std::string& from, const std::string& to) {
+                size_t start_pos = 0;
+                while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+                    str.replace(start_pos, from.length(), to);
+                    start_pos += to.length();
+                }
+            };
+
+            replaceAll(path, "$USER", envOr("USER", ""));
+            replaceAll(path, "$HOME", envOr("HOME", "."));
+            
+            return path;
+        }
+
         void applyKey(Config& cfg, const std::string& key, const std::string& val)
         {
             #define F(name) if (key == #name) { float f; if (parseFloat(val, f)) cfg.knobs.name = f; return; }
@@ -103,7 +131,7 @@ namespace vksumi
             #undef F
             if (key == "enabled")     { cfg.enabled = parseBool(val, true); return; }
             if (key == "toggle_keys") { cfg.toggle_keys = val; return; }
-            if (key == "VKSUMI_CONFIG_FILE") { cfg.vksumi_config_file = val; return; }
+            if (key == "VKSUMI_CONFIG_FILE") { cfg.vksumi_config_file = expandPath(val); return; }
             if (key == "PER_GAME_CONFIG_CREATION") { cfg.per_game_config_creation = parseBool(val, true); return; }
             VKSUMI_TRACE("conf: unknown key '%s'", key.c_str());
         }
@@ -126,12 +154,6 @@ namespace vksumi
             }
             cfg.sources.push_back(path);
             return true;
-        }
-
-        std::string envOr(const char* name, const std::string& fallback)
-        {
-            const char* v = std::getenv(name);
-            return v ? std::string(v) : fallback;
         }
 
         // basename, handles both / and \ cuz Wine paths are wild
