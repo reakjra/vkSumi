@@ -272,7 +272,7 @@ namespace vksumi
 
             ladder.push_back("./vkSumi.conf");                                  // game install dir
 
-            if (const char* p = std::getenv("VKSUMI_CONFIG"))                   // explicit override
+            if (const char* p = std::getenv("VKSUMI_CONFIG_FILE"))              // explicit override
                 ladder.emplace_back(p);
 
             return ladder;
