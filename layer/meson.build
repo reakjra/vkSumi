@@ -2,7 +2,11 @@
 # by scripts/run.fish. The installed manifest below uses an absolute path so
 # the loader finds the .so without LD_LIBRARY_PATH.
 
-lib_install_dir = join_paths(get_option('prefix'), get_option('libdir'))
+if get_option('relocatable_layer')
+    lib_install_dir = join_paths(get_option('prefix'), '$LIB')
+else
+    lib_install_dir = join_paths(get_option('prefix'), get_option('libdir'))
+endif
 
 configure_file(
     input         : 'vksumi.json.in',
