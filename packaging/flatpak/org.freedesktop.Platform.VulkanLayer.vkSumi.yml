@@ -1,0 +1,34 @@
+id: org.freedesktop.Platform.VulkanLayer.vkSumi
+branch: '24.08'
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+build-extension: true
+appstream-compose: false
+sdk-extensions:
+  - org.freedesktop.Sdk.Compat.i386
+  - org.freedesktop.Sdk.Extension.toolchain-i386
+build-options:
+  prefix: /usr/lib/extensions/vulkan/vkSumi
+  strip: true
+modules:
+  - name: vkSumi
+    buildsystem: meson
+    build-options:
+      libdir: lib/x86_64-linux-gnu
+    config-opts: &opts
+      - -Drelocatable_layer=true
+    sources: &src
+      - type: dir
+        path: ../..
+  - name: vkSumi-32bit
+    buildsystem: meson
+    build-options:
+      libdir: lib/i386-linux-gnu
+      append-path: /usr/lib/sdk/toolchain-i386/bin
+      prepend-pkg-config-path: /usr/lib/i386-linux-gnu/pkgconfig
+      env:
+        CC: i686-unknown-linux-gnu-gcc
+        CXX: i686-unknown-linux-gnu-g++
+    config-opts: *opts
+    sources: *src

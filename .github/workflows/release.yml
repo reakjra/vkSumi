@@ -109,3 +109,36 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           files: '*.rpm'
+
+  flatpak:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: ['24.08', '25.08']
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install runtime + i386 build deps
+        run: |
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y flathub \
+            org.freedesktop.Platform//${{ matrix.branch }} \
+            org.freedesktop.Sdk//${{ matrix.branch }} \
+            org.freedesktop.Sdk.Compat.i386//${{ matrix.branch }} \
+            org.freedesktop.Sdk.Extension.toolchain-i386//${{ matrix.branch }}
+
+      - name: build + bundle
+        run: |
+          sed -i "s/24\.08/${{ matrix.branch }}/g" \
+            packaging/flatpak/org.freedesktop.Platform.VulkanLayer.vkSumi.yml
+          flatpak-builder --user --disable-rofiles-fuse --force-clean --repo=repo build \
+            packaging/flatpak/org.freedesktop.Platform.VulkanLayer.vkSumi.yml
+          flatpak build-bundle --runtime repo "vkSumi-${{ matrix.branch }}.flatpak" \
+            org.freedesktop.Platform.VulkanLayer.vkSumi ${{ matrix.branch }}
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: '*.flatpak'
