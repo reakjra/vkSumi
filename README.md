@@ -7,15 +7,38 @@ Per-game configs. The Adrenalin / NVIDIA Freestyle equivalent the platform's bee
 Made because vkBasalt is unmaintained and the only other option is `ReShade -> wine ->
 inject -> pray (waste of time for some minor tweaks, ain't installing all that.)`.
 
-## What it does
+> Little note that this does NOT replace VkBasalt's other functionalities (such as CAS, Denoise, etc.), this is purely for color grading sliders.
 
-- Hooks into any Vulkan game (native or via Proton/DXVK)
-- Sliders for the usual color grading suspects
-- 0 = no change for every knob, easy to read off
-- Edit your `~/.config/vkSumi/vkSumi.conf` while the game runs, save, see it instantly
-- Per-game overrides auto-created on first launch
+## Screenshots
 
-## Install
+
+| Before                                         | After                                |
+|:---|:---|
+| <img src="./screenshots/before_wukong.png"/>   | <img src="./screenshots/after_wukong.png"/> |
+| <img src="./screenshots/before_mgsv.png"/>     | <img src="./screenshots/after_mgsv.png"/> |
+| <img src="./screenshots/before_hsr.png"/>     | <img src="./screenshots/after_hsr.png"/> |
+
+
+## Installation / Build
+
+
+#### AUR
+
+```fish
+yay -S vksumi
+```
+
+#### Flatpak
+
+You can install it manually for now. Grab one or both `.flatpak` files in the [releases page](https://github.com/reakjra/vkSumi/releases) and then run in your terminal: 
+
+```bash
+flatpak install vkSumi-24.08.flatpak 
+# or
+flatpak install vkSumi-25.08.flatpak 
+```
+
+#### Manual building
 
 ```fish
 meson setup builddir --prefix="$HOME/.local"
@@ -26,11 +49,6 @@ meson install -C builddir
 Drops the `.so` in `~/.local/lib/`, the layer manifest in
 `~/.local/share/vulkan/implicit_layer.d/`, and the toggle script in `~/.local/bin/`.
 
-Currently available through AUR:
-
-```fish
-yay -S vksumi
-```
 
 ## Use
 
@@ -73,7 +91,7 @@ red_gain    = 0.0
 green_gain  = 0.0
 blue_gain   = 0.0
 
-shadows     = 0.0
+shadows     = 0.0    # to increase shadows depth go negative (-)
 midtones    = 0.0
 highlights  = 0.0
 
